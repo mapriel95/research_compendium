@@ -1,0 +1,10 @@
+linters: all_linters(
+  packages = "lintr",
+  undesirable_function_linter = undesirable_function_linter(fun = c(rm = "rely on RStudio project settings",
+                                                                    setwd = "rely on RStudio project structure")),
+  implicit_integer_linter = NULL,
+  nonportable_path_linter = NULL,
+  missing_package_linter = NULL,
+  pipe_consistency_linter = pipe_consistency_linter(pipe = "|>"))
+encoding: "UTF-8"
+exclusions: list("renv")
