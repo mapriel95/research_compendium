@@ -4,7 +4,7 @@ library(tidyr)
 library(dplyr)
 set.seed(25)
 
-
+# Download date----
 # https://doi.org/10.6073/pasta/98b16d7d563f265cb52372c8ca99e60f
 # https://doi.org/10.6073/pasta/9fc8f9b5a2fa28bdca96516649b6599b
 # https://doi.org/10.6073/pasta/ce9b4713bb8c065a8fcfd7f50bf30dde
@@ -13,7 +13,9 @@ q <- c("packageid=knb-lter-pal.219.5&entityid=002f3893385f710df69eeebe893144ff",
        "packageid=knb-lter-pal.220.7&entityid=e03b43c924f226486f2f0ab6709d2381",
        "packageid=knb-lter-pal.221.8&entityid=fe853aa8f7a59aa84cdd3197619ef462")
 
-files <- c("adelie.csv", "gentoo.csv", "chinstrap.csv")
+files <- c("data/raw_data/adelie.csv",
+           "data/raw_data/gentoo.csv",
+           "data/raw_data/chinstrap.csv")
 
 download.file(paste0(url, q), files, "libcurl")
 
@@ -22,7 +24,7 @@ raw_data <- do.call(rbind,
                            read.csv,
                            na.strings = c("NA", "", ".")))
 
-
+# Clean data----
 study_year <- 2008L
 
 cleaned_data <- raw_data |>
@@ -52,9 +54,11 @@ cleaned_data <- raw_data |>
   na.omit()
 
 write.csv(cleaned_data,
-          "data.csv",
+          "data/cleaned_data/data.csv",
           row.names = FALSE)
 
+# Data analysis----
+## Table----
 sum_table <- cleaned_data |>
   group_by(year, name, island, sex) |>
   count() |>
@@ -62,10 +66,11 @@ sum_table <- cleaned_data |>
   rename(Island = island)
 
 write.csv(sum_table,
-          file = "summary_table.csv",
+          file = "output/tables/summary_table.csv",
           row.names = FALSE)
 
-png("bodymass_sex_boxplot.png",
+## Graph----
+png("output/figures/bodymass_sex_boxplot.png",
     width = 560,
     height = 560)
 
