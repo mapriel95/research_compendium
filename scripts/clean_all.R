@@ -12,3 +12,5 @@ files <- c("data/raw_data/adelie.csv",
            "manuscript/manuscript.pdf")
 
 file.remove(files)
+
+file.remove(files)

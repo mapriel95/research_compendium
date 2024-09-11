@@ -1,12 +1,10 @@
-library(stringr)
 library(dplyr)
-set.seed(25)
+library(stringr)
 
+# Load data----
 files <- c("data/raw_data/adelie.csv",
            "data/raw_data/gentoo.csv",
            "data/raw_data/chinstrap.csv")
-
-download.file(paste0(url, q), files, "libcurl")
 
 raw_data <- do.call(rbind,
                     lapply(files,
@@ -15,6 +13,7 @@ raw_data <- do.call(rbind,
 
 study_year <- 2008L
 
+# Clean raw data----
 cleaned_data <- raw_data |>
   mutate(species = str_extract(string = Species, pattern = "(?<=\\().+(?=\\))"),
          name = word(string = Species, start = 1),

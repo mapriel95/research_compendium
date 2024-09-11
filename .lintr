@@ -7,4 +7,4 @@ linters: all_linters(
   missing_package_linter = NULL,
   pipe_consistency_linter = pipe_consistency_linter(pipe = "|>"))
 encoding: "UTF-8"
-exclusions: list("renv")
+exclusions: list("renv", "_deps.R")
