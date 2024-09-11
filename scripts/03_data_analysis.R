@@ -23,6 +23,7 @@ write.csv(sum_table,
 
 #### ADD HERE HUXTABLE SCRIPT **************************************************
 ## Formatted table----
+## Formatted table----
 cols <- sum_table |>
   select(-year) |>
   colnames()
@@ -39,13 +40,12 @@ form_table <- sum_table |>
                                     pattern = "^\\w+_",
                                     replacement = "") |>
                  substring(1, 1)) |>
-  set_contents(row = 2, col = 1, value = "") |>
+  set_contents(row = 2, col = 1:2, value = "") |>
   set_bottom_border(row = c(2, 5), col = everywhere) |>
   set_bold(row = 1, col = everywhere) |>
   set_align(row = 1:5, col = 2:7, value = "centre")
 
-form_table |>
-  quick_docx(file = "output/tables/summary_table.docx")
+saveRDS(form_table, file = "output/tables/summary_table.rds")
 
 # Plot data----
 png("output/figures/bodymass_sex_boxplot_old.png",
