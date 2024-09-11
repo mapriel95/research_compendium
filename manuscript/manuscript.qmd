@@ -1,0 +1,95 @@
+---
+title: Reproducible and Collaborative Data Analysis with R
+author: Jane Doe
+
+bibliography:
+  - software.bib
+  - references.bib
+csl: https://www.zotero.org/styles/journal-of-applied-ecology
+
+  
+knitr:
+  opts_chunk: 
+    echo: false
+    message: false
+
+format: 
+  html: 
+    embed-resources: true
+    toc: true
+  pdf:
+    documentclass: scrartcl
+    fontsize: 12pt
+    include-in-header: 
+      text: |
+        \usepackage[left]{lineno}
+        \linenumbers
+        \usepackage{setspace}
+        \doublespacing
+---
+
+
+
+```{r}
+#| label: compute_values
+library(dplyr)
+library(huxtable) # nolint
+
+# Load data----
+sum_table <- read.csv(file = "../output/tables/summary_table.csv")
+data <- read.csv(file = "../data/cleaned_data/data.csv")
+# Load data----
+sum_table <- read.csv(file = "../output/tables/summary_table.csv")
+data <- read.csv(file = "../data/cleaned_data/data.csv")
+form_table <- readRDS(file = "../output/tables/summary_table.rds")
+
+
+# Compute values----
+study_year <- sum_table |>
+  pull(var = year) |>
+  unique()
+
+n_islands <- data |>
+  pull(var = island) |>
+  unique() |>
+  length() |>
+  xfun::numbers_to_words()
+
+species <- data |>
+  pull(var = species) |>
+  unique() |>
+  knitr::combine_words(before = " ",
+                       after = "")
+```
+
+
+
+# Introduction
+
+# Methods
+
+Data on penguins were collected in a previous work on `{r} n_islands` different islands of the Palmer archipelago in Antarctica [add citation]. We restricted the analysis to the data collected in `{r} study_year` (N=`{r} nrow(data)`), which included the following species: `{r} species`(see [add table]).\
+The analysis was conducted with the statistical software R v- `{r} getRversion()` [add citation] using RStudio [add citation]. Data were summarised with the R packages dplyr v- `{r} packageVersion("dplyr")` and tidyr v- `{r} packageVersion("tidyr")` and plotted with ggplot2 v- `{r} packageVersion("ggplot2")` [@pkg_dplyr; @pkg_tidyr; @pkg_ggplot2].
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: Sample size per species, sex and island.
+form_table
+```
+
+# Results
+
+See plot @fig-boxplot
+
+```{r}
+#| label: fig-boxplot
+#| fig-cap: Body mass in grams per sex.
+#| out-width: "60%"
+knitr::include_graphics(path = "../output/figures/bodymass_sex_boxplot.png")
+```
+
+# Discussion
+
+# References
+
+
