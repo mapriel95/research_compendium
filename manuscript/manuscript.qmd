@@ -17,15 +17,8 @@ format:
   html: 
     embed-resources: true
     toc: true
-  pdf:
-    documentclass: scrartcl
-    fontsize: 12pt
-    include-in-header: 
-      text: |
-        \usepackage[left]{lineno}
-        \linenumbers
-        \usepackage{setspace}
-        \doublespacing
+  docx: 
+    toc: false
 ---
 
 
