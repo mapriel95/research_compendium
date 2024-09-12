@@ -11,9 +11,14 @@ knitr::write_bib(pkgs,
                  width = 80,
                  prefix = "pkg_")
 
-rstudio <- RStudio.Version()[["citation"]] |>
-  print(style = "bibtex") |>
-  capture.output()
+rstudio <- c("@Manual{rstudio,",
+             "title = {{RStudio}: Integrated Development Environment for {R}},",
+             "author = {{Posit team}},",
+             "organization = {Posit Software, PBC},",
+             "address = {Boston, MA},",
+             "year = {2024},",
+             "url = {http://www.posit.co/},",
+             "}")
 
 bib <- readLines(bib_file) |>
   # Fix capitalisation of package name

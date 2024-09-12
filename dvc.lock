@@ -1,0 +1,106 @@
+schema: '2.0'
+stages:
+  <stage_name>:
+    cmd: RScript --vanilla scripts/01_download_data.R
+    deps:
+    - path: scripts/01_download_data.R
+      hash: md5
+      md5: c7bcb23f2011b84fa37847ecefe053a3
+      size: 679
+    outs:
+    - path: data/raw_data/adelie.csv
+      hash: md5
+      md5: e7e2be6b203a221949f05e02fcefd853
+      size: 23755
+    - path: data/raw_data/chinstrap.csv
+      hash: md5
+      md5: 1549566fb97afa879dc9446edcf2015f
+      size: 11263
+    - path: data/raw_data/gentoo.csv
+      hash: md5
+      md5: e4b0710c69297031d63866ce8b888f25
+      size: 18872
+  download data:
+    cmd: RScript --vanilla scripts/01_download_data.R
+    deps:
+    - path: scripts/01_download_data.R
+      hash: md5
+      md5: c7bcb23f2011b84fa37847ecefe053a3
+      size: 679
+    outs:
+    - path: data/raw_data/adelie.csv
+      hash: md5
+      md5: e7e2be6b203a221949f05e02fcefd853
+      size: 23755
+    - path: data/raw_data/chinstrap.csv
+      hash: md5
+      md5: 1549566fb97afa879dc9446edcf2015f
+      size: 11263
+    - path: data/raw_data/gentoo.csv
+      hash: md5
+      md5: e4b0710c69297031d63866ce8b888f25
+      size: 18872
+  clean data:
+    cmd: RScript --vanilla scripts/02_clean_data.R
+    deps:
+    - path: data/raw_data/adelie.csv
+      hash: md5
+      md5: e7e2be6b203a221949f05e02fcefd853
+      size: 23755
+    - path: data/raw_data/chinstrap.csv
+      hash: md5
+      md5: 1549566fb97afa879dc9446edcf2015f
+      size: 11263
+    - path: data/raw_data/gentoo.csv
+      hash: md5
+      md5: e4b0710c69297031d63866ce8b888f25
+      size: 18872
+    - path: renv.lock
+      hash: md5
+      md5: 968e1d20b6f292684aa8db7a30423eb1
+      size: 29876
+    - path: scripts/02_clean_data.R
+      hash: md5
+      md5: a112435a6151b2e353f635d3365f0bf3
+      size: 1270
+    outs:
+    - path: data/cleaned_data/data.csv
+      hash: md5
+      md5: d8c5b100e6ca6e21d719236beea05357
+      size: 9421
+  data analysis:
+    cmd: RScript --vanilla scripts/03_data_analysis.R
+    deps:
+    - path: data/cleaned_data/data.csv
+      hash: md5
+      md5: d8c5b100e6ca6e21d719236beea05357
+      size: 9421
+    - path: scripts/03_data_analysis.R
+      hash: md5
+      md5: c880b9db22865ddf95f85251df899ba1
+      size: 2349
+    outs:
+    - path: output/figures/bodymass_sex_boxplot.png
+      hash: md5
+      md5: c1fbc0bde9ec98ee2542ead7b06546e0
+      size: 90376
+    - path: output/tables/summary_table.csv
+      hash: md5
+      md5: 64632757a09a1877517e82eccdf1d6c6
+      size: 202
+    - path: output/tables/summary_table.rds
+      hash: md5
+      md5: c84c070ffd5a4aa66ffd4ccfa87e176d
+      size: 983
+  generate bibliography:
+    cmd: RScript --vanilla scripts/generate_software_citation.R
+    deps:
+    - path: scripts/generate_software_citation.R
+      hash: md5
+      md5: 7e6063b4a8fcbb8dc7a39ec8576cc656
+      size: 915
+    outs:
+    - path: manuscript/software.bib
+      hash: md5
+      md5: c1ee19fd5c38606a74a1f41d7b77bb41
+      size: 1638

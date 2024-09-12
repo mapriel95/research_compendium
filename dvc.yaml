@@ -1,0 +1,51 @@
+stages:
+  download data:
+    deps:
+      - scripts/01_download_data.R
+    outs:
+      - data/raw_data/adelie.csv
+      - data/raw_data/chinstrap.csv
+      - data/raw_data/gentoo.csv
+    cmd: RScript --vanilla scripts/01_download_data.R
+
+  clean data:
+    deps:
+      - data/raw_data/adelie.csv
+      - data/raw_data/chinstrap.csv
+      - data/raw_data/gentoo.csv
+      - scripts/02_clean_data.R
+      - renv.lock
+    outs:
+      - data/cleaned_data/data.csv
+    cmd: RScript --vanilla scripts/02_clean_data.R
+
+  data analysis:
+    deps:
+      - scripts/03_data_analysis.R
+      - data/cleaned_data/data.csv
+    outs:
+      - output/tables/summary_table.csv
+      - output/tables/summary_table.rds
+      - output/figures/bodymass_sex_boxplot.png
+    cmd: RScript --vanilla scripts/03_data_analysis.R
+
+  generate bibliography:
+    deps:
+      - scripts/generate_software_citation.R
+    outs:
+      - manuscript/software.bib
+    cmd: RScript --vanilla scripts/generate_software_citation.R
+
+  render manuscript:
+    deps:
+      - manuscript/manuscript.qmd
+      - data/cleaned_data/data.csv
+      - output/tables/summary_table.csv
+      - output/tables/summary_table.rds
+      - manuscript/software.bib
+      - manuscript/references.bib
+      - manuscript/template.docx
+    outs:
+      - manuscript/manuscript.docx
+    cmd: quarto render manuscript/manuscript.qmd --to docx --quiet
+

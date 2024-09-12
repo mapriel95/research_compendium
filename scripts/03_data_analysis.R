@@ -8,10 +8,10 @@ library(huxtable)
 set.seed(25)
 
 # Load data----
-data <- read.csv(file = "data/cleaned_data/data.csv")
+cleaned_data <- read.csv(file = "data/cleaned_data/data.csv")
 
 # Summary table----
-sum_table <- data |>
+sum_table <- cleaned_data |>
   group_by(year, name, island, sex) |>
   count() |>
   pivot_wider(id_cols = NULL, names_from = c(name, sex), values_from = n) |>
@@ -53,13 +53,13 @@ png("output/figures/bodymass_sex_boxplot_old.png",
     height = 560)
 
 boxplot(body_mass ~ sex,
-        data = data,
+        data = cleaned_data,
         xlab = "",
         ylab = "Body mass (g)",
         las = 2)
 
 stripchart(body_mass ~ sex,
-           data = data,
+           data = cleaned_data,
            vertical = TRUE,
            method = "jitter",
            jitter = 0.2,
