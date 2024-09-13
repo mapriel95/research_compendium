@@ -8,10 +8,10 @@ library(huxtable)
 set.seed(25)
 
 # Load data----
-cleaned_data <- read.csv(file = "data/cleaned_data/data.csv")
+data <- read.csv(file = "data/cleaned_data/data.csv")
 
 # Summary table----
-sum_table <- cleaned_data |>
+sum_table <- data |>
   group_by(year, name, island, sex) |>
   count() |>
   pivot_wider(id_cols = NULL, names_from = c(name, sex), values_from = n) |>
@@ -22,7 +22,6 @@ write.csv(sum_table,
           row.names = FALSE)
 
 #### ADD HERE HUXTABLE SCRIPT **************************************************
-## Formatted table----
 ## Formatted table----
 cols <- sum_table |>
   select(-year) |>
@@ -40,7 +39,7 @@ form_table <- sum_table |>
                                     pattern = "^\\w+_",
                                     replacement = "") |>
                  substring(1, 1)) |>
-  set_contents(row = 2, col = 1:2, value = "") |>
+  set_contents(row = 2, col = 1, value = "") |>
   set_bottom_border(row = c(2, 5), col = everywhere) |>
   set_bold(row = 1, col = everywhere) |>
   set_align(row = 1:5, col = 2:7, value = "centre")
@@ -53,13 +52,13 @@ png("output/figures/bodymass_sex_boxplot_old.png",
     height = 560)
 
 boxplot(body_mass ~ sex,
-        data = cleaned_data,
+        data = data,
         xlab = "",
         ylab = "Body mass (g)",
         las = 2)
 
 stripchart(body_mass ~ sex,
-           data = cleaned_data,
+           data = data,
            vertical = TRUE,
            method = "jitter",
            jitter = 0.2,
@@ -70,8 +69,7 @@ stripchart(body_mass ~ sex,
 dev.off()
 
 #### Add here GGPLOT SCRIPT*****************************************************
-
-p <- ggplot(cleaned_data, mapping = aes(x = sex, y = body_mass, colour = sex)) +
+p <- ggplot(data, mapping = aes(x = sex, y = body_mass, colour = sex)) +
   geom_boxplot() +
   geom_jitter(width = 0.2) +
   labs(x = "", y = "Body mass (g)") +

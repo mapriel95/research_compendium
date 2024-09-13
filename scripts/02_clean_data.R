@@ -11,7 +11,7 @@ raw_data <- do.call(rbind,
                            read.csv,
                            na.strings = c("NA", "", ".")))
 
-study_year <- 2008L
+study_year <- 2009L
 
 # Clean raw data----
 cleaned_data <- raw_data |>
