@@ -1,5 +1,5 @@
 stages:
-  download data:
+  download_data:
     deps:
       - scripts/01_download_data.R
     outs:
@@ -8,35 +8,36 @@ stages:
       - data/raw_data/gentoo.csv
     cmd: RScript --vanilla scripts/01_download_data.R
 
-  clean data:
+  clean_data:
     deps:
+      - scripts/02_clean_data.R
       - data/raw_data/adelie.csv
       - data/raw_data/chinstrap.csv
       - data/raw_data/gentoo.csv
-      - scripts/02_clean_data.R
       - renv.lock
     outs:
       - data/cleaned_data/data.csv
     cmd: RScript --vanilla scripts/02_clean_data.R
 
-  data analysis:
+  data_analysis:
     deps:
       - scripts/03_data_analysis.R
       - data/cleaned_data/data.csv
     outs:
       - output/tables/summary_table.csv
       - output/tables/summary_table.rds
+      - output/figures/bodymass_sex_boxplot_old.png
       - output/figures/bodymass_sex_boxplot.png
     cmd: RScript --vanilla scripts/03_data_analysis.R
 
-  generate bibliography:
+  gen_software_bib:
     deps:
       - scripts/generate_software_citation.R
     outs:
       - manuscript/software.bib
     cmd: RScript --vanilla scripts/generate_software_citation.R
 
-  render manuscript:
+  render_manuscript:
     deps:
       - manuscript/manuscript.qmd
       - data/cleaned_data/data.csv
@@ -48,4 +49,3 @@ stages:
     outs:
       - manuscript/manuscript.docx
     cmd: quarto render manuscript/manuscript.qmd --to docx --quiet
-

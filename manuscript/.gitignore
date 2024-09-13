@@ -1,4 +1,3 @@
 *.docx
-*.pdf
-*.html
+!template.docx
 software.bib

@@ -1,88 +1,92 @@
 ---
-title: Reproducible and Collaborative Data Analysis with R
-author: Jane Doe
+title: Reproducible and Collaborative Data Analyis with R
+author:
+  - name: John Doe
+    affiliations:
+      - ref: unibe
+    corresponding: true
+    email: john.doe@unibe.ch
+    orcid: 0000-1111-2222-3333
+  - name: John Smith
+    affiliations:
+      - ref: unil
+    orcid: 3333-2222-1111-0000
+    
+affiliations:
+  - id: unibe
+    name: University of Bern, Institute of Ecology and Evolution, Bern, Switzerland.
+  - id: unil
+    name: University of Lausanne, Department of Ecology and Evolution, Lausanne, Switzerland.
+
+format:
+  docx:
+    toc: false
+    reference-doc: template.docx
 
 bibliography:
   - software.bib
   - references.bib
-csl: https://www.zotero.org/styles/journal-of-applied-ecology
+csl: https://www.zotero.org/styles/methods-in-ecology-and-evolution
 
-  
+filters:
+  - abstract-section
+  - authors-block
+
 knitr:
   opts_chunk: 
     echo: false
     message: false
-
-format: 
-  html: 
-    embed-resources: true
-    toc: true
-  docx: 
-    toc: false
 ---
-
-
 
 ```{r}
 #| label: compute_values
 library(dplyr)
-library(huxtable) # nolint
-
-# Load data----
-sum_table <- read.csv(file = "../output/tables/summary_table.csv")
+library(huxtable)
 data <- read.csv(file = "../data/cleaned_data/data.csv")
-# Load data----
 sum_table <- read.csv(file = "../output/tables/summary_table.csv")
-data <- read.csv(file = "../data/cleaned_data/data.csv")
 form_table <- readRDS(file = "../output/tables/summary_table.rds")
 
+var <- "island"
 
-# Compute values----
-study_year <- sum_table |>
-  pull(var = year) |>
+n_islands <- xfun::numbers_to_words(length(sum_table$island))
+study_year <- sum_table |> 
+  pull(var = "year") |> 
   unique()
 
-n_islands <- data |>
-  pull(var = island) |>
-  unique() |>
-  length() |>
-  xfun::numbers_to_words()
-
-species <- data |>
-  pull(var = species) |>
-  unique() |>
-  knitr::combine_words(before = " ",
-                       after = "")
+species <- data |>  
+  pull(var = species) |> 
+  unique() |> 
+  knitr::combine_words(before = "*",
+                       after = "*")
 ```
 
+# Abstract
 
+Lorem ipsum dolor sit amet, duis per dui, egestas tortor, dui. Id eu sodales lectus sed non. Natoque netus phasellus, nunc quam ut, aliquet et. Vitae, tempus accumsan lacinia sit interdum integer nunc imperdiet eget himenaeos. Quis mauris semper ut magnis vel dolor, tortor egestas lacinia et. Sit dis sed, proin consequat nisl vulputate, libero, sed. In proin amet eu in vel nibh fringilla, tincidunt. Sit mollis ac, vitae platea mauris venenatis arcu class nec ligula. Ipsum tincidunt, eleifend orci luctus fames eu. Magnis rhoncus at nibh, iaculis nisl amet fusce dolor inceptos. Sit id, semper, a vestibulum imperdiet facilisis vivamus. Nullam eget ut purus eros taciti eget iaculis augue per nisl erat sollicitudin, varius adipiscing et. Suspendisse vitae nec tristique, massa tincidunt.
 
 # Introduction
 
 # Methods
 
-Data on penguins were collected in a previous work on `{r} n_islands` different islands of the Palmer archipelago in Antarctica [add citation]. We restricted the analysis to the data collected in `{r} study_year` (N=`{r} nrow(data)`), which included the following species: `{r} species`(see [add table]).\
-The analysis was conducted with the statistical software R v- `{r} getRversion()` [add citation] using RStudio [add citation]. Data were summarised with the R packages dplyr v- `{r} packageVersion("dplyr")` and tidyr v- `{r} packageVersion("tidyr")` and plotted with ggplot2 v- `{r} packageVersion("ggplot2")` [@pkg_dplyr; @pkg_tidyr; @pkg_ggplot2].
+Data on penguins were collected in a previous work on `{r} n_islands` different islands of the Palmer archipelago in Antarctica [@adelie; @chinstrap; @gentoo; @gorman_etal_2014]. We restricted the analysis to the data collected in `{r} study_year` (N=`{r} nrow(data)`), which included the following species: `{r} I(species)` (see @tbl-summary).\
+The analysis was conducted with the statistical software R v-`{r} getRversion()` [@pkg_base] using RStudio [@rstudio]. Data were summarised with the R packages dplyr v-`{r} packageVersion("dplyr")` and tidyr v-`{r} packageVersion("tidyr")` and plotted with ggplot2 v-`{r} packageVersion("ggplot2")` [@pkg_dplyr; @pkg_tidyr; @pkg_ggplot2; @ggplot22016].
 
 ```{r}
 #| label: tbl-summary
-#| tbl-cap: Sample size per species, sex and island.
+#| tbl-cap: Sample size per species, sex, and island.
 form_table
 ```
 
 # Results
 
-See plot @fig-boxplot
+See plot @fig-boxplot:
 
 ```{r}
 #| label: fig-boxplot
 #| fig-cap: Body mass in grams per sex.
-#| out-width: "60%"
 knitr::include_graphics(path = "../output/figures/bodymass_sex_boxplot.png")
 ```
 
 # Discussion
 
 # References
-
-

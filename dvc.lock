@@ -1,6 +1,6 @@
 schema: '2.0'
 stages:
-  <stage_name>:
+  download_data:
     cmd: RScript --vanilla scripts/01_download_data.R
     deps:
     - path: scripts/01_download_data.R
@@ -10,97 +10,117 @@ stages:
     outs:
     - path: data/raw_data/adelie.csv
       hash: md5
-      md5: e7e2be6b203a221949f05e02fcefd853
-      size: 23755
+      md5: 728b83c535a9eab0024cda78929c0464
+      size: 23908
     - path: data/raw_data/chinstrap.csv
       hash: md5
-      md5: 1549566fb97afa879dc9446edcf2015f
-      size: 11263
+      md5: dcb262acf9d77b2901c8197a9dacad9b
+      size: 11332
     - path: data/raw_data/gentoo.csv
       hash: md5
-      md5: e4b0710c69297031d63866ce8b888f25
-      size: 18872
-  download data:
-    cmd: RScript --vanilla scripts/01_download_data.R
-    deps:
-    - path: scripts/01_download_data.R
-      hash: md5
-      md5: c7bcb23f2011b84fa37847ecefe053a3
-      size: 679
-    outs:
-    - path: data/raw_data/adelie.csv
-      hash: md5
-      md5: e7e2be6b203a221949f05e02fcefd853
-      size: 23755
-    - path: data/raw_data/chinstrap.csv
-      hash: md5
-      md5: 1549566fb97afa879dc9446edcf2015f
-      size: 11263
-    - path: data/raw_data/gentoo.csv
-      hash: md5
-      md5: e4b0710c69297031d63866ce8b888f25
-      size: 18872
-  clean data:
+      md5: 1a9e9a6932c832442cfb1a1966a8b221
+      size: 18997
+  clean_data:
     cmd: RScript --vanilla scripts/02_clean_data.R
     deps:
     - path: data/raw_data/adelie.csv
       hash: md5
-      md5: e7e2be6b203a221949f05e02fcefd853
-      size: 23755
+      md5: 728b83c535a9eab0024cda78929c0464
+      size: 23908
     - path: data/raw_data/chinstrap.csv
       hash: md5
-      md5: 1549566fb97afa879dc9446edcf2015f
-      size: 11263
+      md5: dcb262acf9d77b2901c8197a9dacad9b
+      size: 11332
     - path: data/raw_data/gentoo.csv
       hash: md5
-      md5: e4b0710c69297031d63866ce8b888f25
-      size: 18872
+      md5: 1a9e9a6932c832442cfb1a1966a8b221
+      size: 18997
     - path: renv.lock
       hash: md5
       md5: 968e1d20b6f292684aa8db7a30423eb1
       size: 29876
     - path: scripts/02_clean_data.R
       hash: md5
-      md5: a112435a6151b2e353f635d3365f0bf3
+      md5: 4f75bee51344140c2d2d879f3b32c90d
       size: 1270
     outs:
     - path: data/cleaned_data/data.csv
       hash: md5
-      md5: d8c5b100e6ca6e21d719236beea05357
-      size: 9421
-  data analysis:
+      md5: ce6d1d4e0949d9dbe1f331b865542ebb
+      size: 9946
+  data_analysis:
     cmd: RScript --vanilla scripts/03_data_analysis.R
     deps:
     - path: data/cleaned_data/data.csv
       hash: md5
-      md5: d8c5b100e6ca6e21d719236beea05357
-      size: 9421
+      md5: ce6d1d4e0949d9dbe1f331b865542ebb
+      size: 9946
     - path: scripts/03_data_analysis.R
       hash: md5
-      md5: c880b9db22865ddf95f85251df899ba1
-      size: 2349
+      md5: 5d7f2265ebd39e282f0e3c181c3ef1af
+      size: 2365
     outs:
     - path: output/figures/bodymass_sex_boxplot.png
       hash: md5
-      md5: c1fbc0bde9ec98ee2542ead7b06546e0
-      size: 90376
+      md5: 17efa854fcbddd1555ccc7d5ebbb45bf
+      size: 93658
+    - path: output/figures/bodymass_sex_boxplot_old.png
+      hash: md5
+      md5: 1a23fa47800c51d7f30a646edeb62920
+      size: 5400
     - path: output/tables/summary_table.csv
       hash: md5
-      md5: 64632757a09a1877517e82eccdf1d6c6
-      size: 202
+      md5: 90d94e34bd1d1dd6366a1082be23a859
+      size: 210
     - path: output/tables/summary_table.rds
       hash: md5
-      md5: c84c070ffd5a4aa66ffd4ccfa87e176d
-      size: 983
-  generate bibliography:
+      md5: 1f773679ce0ad18509e763453d3596f8
+      size: 984
+  gen_software_bib:
     cmd: RScript --vanilla scripts/generate_software_citation.R
     deps:
     - path: scripts/generate_software_citation.R
       hash: md5
-      md5: 7e6063b4a8fcbb8dc7a39ec8576cc656
-      size: 915
+      md5: 40208cfdb33c56b56cc6e2d3a9e2e292
+      size: 947
     outs:
     - path: manuscript/software.bib
       hash: md5
-      md5: c1ee19fd5c38606a74a1f41d7b77bb41
-      size: 1638
+      md5: 128760fa06f39e5bc905493dad0b0850
+      size: 1692
+  render_manuscript:
+    cmd: quarto render manuscript/manuscript.qmd --to docx --quiet
+    deps:
+    - path: data/cleaned_data/data.csv
+      hash: md5
+      md5: ce6d1d4e0949d9dbe1f331b865542ebb
+      size: 9946
+    - path: manuscript/manuscript.qmd
+      hash: md5
+      md5: 9b89761c5589a835dcf25bd80ce85799
+      size: 3297
+    - path: manuscript/references.bib
+      hash: md5
+      md5: 84a728bcd5702206571d55d43cd0b5f0
+      size: 1803
+    - path: manuscript/software.bib
+      hash: md5
+      md5: 128760fa06f39e5bc905493dad0b0850
+      size: 1692
+    - path: manuscript/template.docx
+      hash: md5
+      md5: 3c1cfab830b92541c38a0dec3a3bb428
+      size: 16013
+    - path: output/tables/summary_table.csv
+      hash: md5
+      md5: 90d94e34bd1d1dd6366a1082be23a859
+      size: 210
+    - path: output/tables/summary_table.rds
+      hash: md5
+      md5: 1f773679ce0ad18509e763453d3596f8
+      size: 984
+    outs:
+    - path: manuscript/manuscript.docx
+      hash: md5
+      md5: c90118b452d27ad825f8b53b808c5fbc
+      size: 100911

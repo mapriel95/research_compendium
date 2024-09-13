@@ -17,3 +17,9 @@ StripTrailingWhitespace: Yes
 LineEndingConversion: Native
 
 UseNativePipeOperator: Yes
+
+MarkdownWrap: None
+MarkdownReferences: Document
+MarkdownCanonical: No
+
+SpellingDictionary: en_GB
